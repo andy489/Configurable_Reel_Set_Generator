@@ -24,3 +24,11 @@ hs_err_pid*
 
 # mac-OS specifics metadata
 .DS_Store
+
+# intelliJ
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
