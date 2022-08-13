@@ -3,7 +3,7 @@ package rng;
 import org.apache.commons.math3.random.MersenneTwister;
 
 public class RNG implements IRNG {
-    private static MersenneTwister mt;
+    private final MersenneTwister mt;
 
     public RNG() {
         mt = new MersenneTwister();
