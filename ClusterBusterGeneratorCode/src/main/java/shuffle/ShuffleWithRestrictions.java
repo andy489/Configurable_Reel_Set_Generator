@@ -1,5 +1,6 @@
 package shuffle;
 
+import reel.ReelSet;
 import rng.RNG;
 
 import java.util.Collection;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class ShuffleWithRestrictions {
+public class ShuffleWithRestrictions extends ReelSet {
     private final RNG rng = new RNG();
 
     private final int MIN_STACK;

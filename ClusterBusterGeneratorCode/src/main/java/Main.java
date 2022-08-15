@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Main {
+public class Main extends ReelSet{
     private static void fillMapWithTilesIDsCounts(
             Map<Integer, Integer> tilesCnt,
             List<Integer> CURR_TILES_COUNTS
@@ -19,35 +19,22 @@ public class Main {
     }
 
     public static void main(String... args) {
-        final int MIN_TILES_CNT_WIN = 5;
 
         ShuffleWithRestrictions shuffler1 = new ShuffleWithRestrictions(
-                3,
-                3,
-                3
+                MIN_STACK_1,
+                MAX_STACK_1,
+                DIST_1
         );
 
         ShuffleWithRestrictions shuffler2 = new ShuffleWithRestrictions(
-                1,
-                1,
-                2
+                MIN_STACK_2,
+                MAX_STACK_2,
+                DIST_2
         );
-
-//        ShuffleWithRestrictions shuffler1 = new ShuffleWithRestrictions(
-//                4,
-//                4,
-//                2
-//        );
-//
-//        ShuffleWithRestrictions shuffler2 = new ShuffleWithRestrictions(
-//                2,
-//                2,
-//                4
-//        );
 
         int m = 0;
 
-        for (final List<Integer> CURR_TILES_CNT : ReelSet.TILES_COUNTS) {
+        for (final List<Integer> CURR_TILES_CNT : TILES_COUNTS) {
             Map<Integer, Integer> tilesCnt = new TreeMap<>();
 
             fillMapWithTilesIDsCounts(tilesCnt, CURR_TILES_CNT);
