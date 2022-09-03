@@ -10,7 +10,7 @@ public class RNG implements IRNG {
     }
 
     @Override
-    public int getRandInRange(int l, int r) {
+    public Integer getRandInRange(Integer l, Integer r) {
         return mt.nextInt(r - l) + l;
     }
 }

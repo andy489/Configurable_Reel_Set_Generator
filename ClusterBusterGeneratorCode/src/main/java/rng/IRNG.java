@@ -6,5 +6,5 @@ public interface IRNG {
      * @param r right bound of interval - exclusive
      * @return random number in range [l, r)
      */
-    int getRandInRange(int l, int r);
+    Integer getRandInRange(Integer l, Integer r);
 }
