@@ -8,8 +8,6 @@ import reel.Restriction;
 import rng.RNG;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -208,9 +206,7 @@ public class ShuffleWithRestrictions {
         for (int i = 0; i < SIZE_1; i++) {
             final int SIZE_2 = reelCounts.get(i);
 
-            for (int j = 0; j < SIZE_2; j++) {
-                sb.append(i + 1 + ", ");
-            }
+            sb.append((i + 1 + ", ").repeat(Math.max(0, SIZE_2)));
         }
         sb.delete(sb.length()-2, sb.length());
         sb.append("],");
@@ -261,7 +257,7 @@ public class ShuffleWithRestrictions {
 
         String filePath = "reelDefinitions.json";
 
-        ReelSetsCollection reelSetsCollection = null;
+        ReelSetsCollection reelSetsCollection;
         try {
             reelSetsCollection = ReaderManager.readFile(filePath, new ObjectMapper());
         } catch (IOException e) {
