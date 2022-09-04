@@ -1,5 +1,5 @@
 {
-  "flat" : true,
+  "flat" : false,
   "reelSets": [
     {
       "tilesCounts": [
