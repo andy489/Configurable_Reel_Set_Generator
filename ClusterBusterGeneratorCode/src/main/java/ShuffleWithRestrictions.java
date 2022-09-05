@@ -1,9 +1,9 @@
-package shuffler;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ReaderManager;
 import io.WriterManager;
 import reel.ReelSetsCollection;
+import shuffler.FlatGenerator;
+import shuffler.ShuffleGenerator;
 
 import java.io.IOException;
 import java.util.function.Predicate;
