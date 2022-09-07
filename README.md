@@ -68,5 +68,5 @@ src
 }
 ```
 Let n be the number of reels and k be the number of restrictions.
-If n > k, then the i-th restriction applies for all reels, which row number j (0-based enumerating) gives i mod k.
+If n > k, then the i-th restriction applies for all reels, which row number j (0-based enumerating) divided modulo k gives i.
 Else the j-th restriction applies for the j-th reel and the last k - n restrictions are ignored.
