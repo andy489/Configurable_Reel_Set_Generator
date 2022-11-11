@@ -52,7 +52,7 @@ src
       ]
     },
     {
-      "tilesCounts": [
+      "cnts": [
         [0, 12, 12, 0, 10, 10, 0, 6, 6],
         [12, 0, 12, 10, 0, 10, 6, 0, 6],
         [12, 12, 0, 10, 10, 0, 6, 6, 0],
@@ -60,14 +60,16 @@ src
         [12, 0, 12, 10, 0, 10, 6, 0, 6],
         [12, 12, 0, 10, 10, 0, 6, 6, 0]
       ],
-      "restrictions": [
-        {"minStack": 4, "maxStack": 4, "distance": 4},
-        {"minStack": 2, "maxStack": 2, "distance": 4}
+      "res": [
+        {"min": 4, "max": 4, "dist": 4},
+        {"min": 2, "max": 2, "dist": 4}
       ]
     }
   ]
 }
 ```
+As we can observe, we can use alias for property names: restrictions -> res, tileCounts -> cnts and etc. (We can find all alias in reel/Restriction.java).
+
 Let n be the number of reels and k be the number of restrictions.
 If n > k, then the i-th restriction applies for all reels, which row number j (0-based enumerating) divided modulo k gives i.
 Else the j-th restriction applies for the j-th reel and the last k - n restrictions are ignored.
