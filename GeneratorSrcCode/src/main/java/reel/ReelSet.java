@@ -8,8 +8,8 @@ import java.util.List;
 public class ReelSet {
     @JsonAlias({"counts", "cnt", "cnts", "tiles"})
     protected List<List<Integer>> tilesCounts;
+    
     @JsonAlias({"res"})
-
     protected List<Restriction> restrictions;
 
     @Override
