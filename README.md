@@ -1,4 +1,4 @@
-# ConfigurableReelSetGeneratorForClusterSlotMachine
+# Configurable Reel Set Generator
 Tile proportion preserving rolls generator for slot machine. Very useful for creating no win reels for slot machine with cluster payout strategy, low/hight payout reel sets for slot machine with ways and megaways payout strategy and more.
 Full control of reel shuffling, using stack size and minimal distance for two tiles of same type in different stacks.
 
