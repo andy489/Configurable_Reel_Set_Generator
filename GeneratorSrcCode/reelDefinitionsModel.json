@@ -1,0 +1,43 @@
+{
+  "com": "evo",
+  "mapName": "MOH",
+  "gameId": 234,
+
+  "strategy": "shuffle",
+  "output": "file",
+  "resultFilePath": "./result.txt",
+
+  "convert": true,
+  "convertSrc": "./result.txt",
+  "convertDest": "./result.txt",
+
+  "reelSets": [
+    {
+      "tilesCounts": [
+        [0, 12, 12, 0, 10, 10, 0, 6, 6],
+        [12, 0, 12, 10, 0, 10, 6, 0, 6],
+        [12, 12, 0, 10, 10, 0, 6, 6, 0],
+        [0, 12, 12, 0, 10, 10, 0, 6, 6],
+        [12, 0, 12, 10, 0, 10, 6, 0, 6],
+        [12, 12, 0, 10, 10, 0, 6, 6, 0]
+      ],
+      "restrictions": [
+        {"minStack": 1, "maxStack": 3, "distance": 3},
+        {"minStack": 1, "maxStack": 1, "distance": 2}
+      ]
+    },
+    {
+      "tilesCounts": [
+        [0, 12, 12, 0, 10, 10, 0, 6, 6],
+        [12, 0, 12, 10, 0, 10, 6, 0, 6],
+        [12, 12, 0, 10, 10, 0, 6, 6, 0],
+        [0, 12, 12, 0, 10, 10, 0, 6, 6],
+        [12, 0, 12, 10, 0, 10, 6, 0, 6]
+      ],
+      "restrictions": [
+        {"minStack": 2, "maxStack": 4, "distance": 3},
+        {"minStack": 1, "maxStack": 2, "distance": 3}
+      ]
+    }
+  ]
+}

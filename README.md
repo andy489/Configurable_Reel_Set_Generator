@@ -32,7 +32,18 @@ src
 
 ```json
 {
-  "flat" : false,
+  "com": "evo", // "evo" | "cay"
+  "mapName": "MOH",
+  "gameId": 234,
+
+  "strategy": "shuffle",
+  "output": "file",
+  "resultFilePath": "./result.txt",
+
+  "convert": true,
+  "convertSrc": "./result.txt",
+  "convertDest": "./result.txt",
+  
   "reelSets": [
     {
       "tilesCounts": [
@@ -41,28 +52,24 @@ src
         [12, 12, 0, 10, 10, 0, 6, 6, 0],
         [0, 12, 12, 0, 10, 10, 0, 6, 6],
         [12, 0, 12, 10, 0, 10, 6, 0, 6],
-        [12, 12, 0, 10, 10, 0, 6, 6, 0],
-        [0, 12, 12, 0, 10, 10, 0, 6, 6],
-        [12, 0, 12, 10, 0, 10, 6, 0, 6],
         [12, 12, 0, 10, 10, 0, 6, 6, 0]
       ],
       "restrictions": [
-        {"minStack": 3, "maxStack": 3, "distance": 3},
+        {"minStack": 1, "maxStack": 3, "distance": 3},
         {"minStack": 1, "maxStack": 1, "distance": 2}
       ]
     },
     {
-      "cnts": [
+      "tilesCounts": [
         [0, 12, 12, 0, 10, 10, 0, 6, 6],
         [12, 0, 12, 10, 0, 10, 6, 0, 6],
         [12, 12, 0, 10, 10, 0, 6, 6, 0],
         [0, 12, 12, 0, 10, 10, 0, 6, 6],
-        [12, 0, 12, 10, 0, 10, 6, 0, 6],
-        [12, 12, 0, 10, 10, 0, 6, 6, 0]
+        [12, 0, 12, 10, 0, 10, 6, 0, 6]
       ],
-      "res": [
-        {"min": 4, "max": 4, "dist": 4},
-        {"min": 2, "max": 2, "dist": 4}
+      "restrictions": [
+        {"minStack": 2, "maxStack": 4, "distance": 3},
+        {"minStack": 1, "maxStack": 2, "distance": 3}
       ]
     }
   ]

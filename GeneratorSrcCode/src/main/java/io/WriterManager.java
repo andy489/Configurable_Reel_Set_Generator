@@ -10,7 +10,6 @@ import java.nio.file.Path;
 
 public class WriterManager {
     public static void writeResults(String resultPath, StringBuilder sb) {
-        resultPath = "./" + resultPath;
         Path resultAsPath = Path.of(resultPath);
 
         if (!Files.exists(resultAsPath)) {
