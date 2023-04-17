@@ -36,8 +36,8 @@ src
   "mapName": "MOH",
   "gameId": 234,
 
-  "strategy": "shuffle",
-  "output": "file",
+  "strategy": "shuffle", // "shuffke" | "flat"
+  "output": "file", // "file" | "stdout"
   "resultFilePath": "./result.txt",
 
   "convert": true,
