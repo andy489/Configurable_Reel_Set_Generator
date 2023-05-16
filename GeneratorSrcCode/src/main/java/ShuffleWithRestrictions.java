@@ -1,21 +1,29 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import convert.CayConverter;
+import convert.CountConverter;
+import convert.EvoConverter;
+import exception.NoSuchCompanyFormatException;
+import exception.NotSupportedOutputMediaType;
 import io.ReaderManager;
 import io.WriterManager;
 import reel.ReelSetEvo;
 import reel.ReelSetsCollectionData;
 import shuffler.FlatGenerator;
 import shuffler.ShuffleGenerator;
+import wrapper.ConvertWrapper;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class ShuffleWithRestrictions {
 
-    private static final String cmdName = " gen.jar";
+    private static final String cmdName = "gen.jar";
 
     private static final String usageMsg =
             "\u001B[34mUsage: %n \u001B[32m%s \u001B[33m<src> <dest> %n" +
@@ -51,7 +59,7 @@ public class ShuffleWithRestrictions {
             srcFilePath = args[0];
             targetFilePath = args[1];
         } else if (args.length > 2) {
-            System.out.println("Too much arguments");
+            System.out.println("Arguments must be at most 2");
             System.out.printf(usageMsg, cmdName, cmdName, cmdName, defaultSourcePath);
             return;
         }
@@ -73,105 +81,106 @@ public class ShuffleWithRestrictions {
             throw new RuntimeException(String.format("Invalid content in file %s", srcFilePath));
         }
 
-        final Boolean convert = reelSetsCollectionData.getConvert();
+        final ConvertWrapper convert = reelSetsCollectionData.getConvert();
 
-        if (!convert && reelSetsCollectionData.getOutput().equals("file")) {
-            if (reelSetsCollectionData.getResultFilePath() != null) {
-                targetFilePath = reelSetsCollectionData.getResultFilePath();
-            }
-        }
+        if (!convert.isConfirm()) {
+            StringBuilder sbEvo = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
-
-        // Fill sb
-        if (!convert) {
             if (reelSetsCollectionData.getStrategy().equals("flat")) {
-                FlatGenerator.generateFlatReels(reelSetsCollectionData, sb); // FLAT GEN
+                FlatGenerator.generateFlatReels(reelSetsCollectionData, sbEvo); // FLAT GEN
             } else {
-                ShuffleGenerator.generateStackedReelsWithRestrictions(reelSetsCollectionData, sb); // SHUFFLE GEN
+                ShuffleGenerator.generateStackedReelsWithRestrictions(reelSetsCollectionData, sbEvo); // SHUFFLE GEN
             }
-        }
 
-        if (!convert) {
-            if (reelSetsCollectionData.getCom().equals("evo")) {
+            if (reelSetsCollectionData.getOutput().equals("stdout")) {
+                System.out.println(sbEvo);
+            } else if (reelSetsCollectionData.getOutput().equals("file")) {
+                WriterManager.writeResults(reelSetsCollectionData.getResultFilePath(), sbEvo);
+            } else {
+                throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
+            }
+        } else {
+            if (reelSetsCollectionData.getConvert().getToCom().equals("count") ||
+                    reelSetsCollectionData.getConvert().getToCom().equals("evo")) {
+                List<ReelSetEvo> reelSetEvoList = new ArrayList<>();
+
+                try (BufferedReader br = new BufferedReader(new FileReader(reelSetsCollectionData.getConvert().getSrc()))) {
+                    String line = br.readLine();
+
+                    ReelSetEvo currReelSet = null;
+                    String currSetName = null;
+                    while (line != null) {
+
+                        String[] tokens = line.split(",");
+                        if (tokens.length != 4) {
+                            break;
+//                            throw new NoSuchCompanyFormatException("Unrecognizable company format. Please review reelDefinitions.json");
+                        }
+
+                        if (currSetName == null || !currSetName.equals(tokens[0])) {
+                            currSetName = tokens[0];
+                            currReelSet = new ReelSetEvo().setSetName(currSetName)
+                                    .setReelSet(new ArrayList<>());
+
+                            reelSetEvoList.add(currReelSet);
+                            for (int i = 0; i < 10; i++) {
+                                currReelSet.getReelSet().add(new ArrayList<>());
+                            }
+                        }
+
+                        currReelSet.getReelSet().get(Integer.parseInt(tokens[1].replaceAll("\"", ""))).add(Integer.parseInt(tokens[3].replaceAll("\"", "")) % 100);
+                        line = br.readLine();
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                // remove empty reels
+                for (ReelSetEvo reelSetEvo : reelSetEvoList) {
+                    reelSetEvo.setReelSet(reelSetEvo.getReelSet().stream().filter(r -> !r.isEmpty()).toList());
+                }
+
+                StringBuilder sb = null;
+                if(reelSetsCollectionData.getConvert().getToCom().equals("count")) {
+                    sb = CountConverter.convertToTileCounts(reelSetEvoList);
+                } else {
+                    sb = EvoConverter.convertToEvo(reelSetEvoList);
+                }
 
                 if (reelSetsCollectionData.getOutput().equals("stdout")) {
                     System.out.println(sb);
+                } else if (reelSetsCollectionData.getOutput().equals("file")) {
+                    WriterManager.writeResults(reelSetsCollectionData.getConvert().getDest(), sb);
                 } else {
-                    WriterManager.writeResults(targetFilePath, sb);
+                    throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
                 }
-            } else {
+            } else if (reelSetsCollectionData.getConvert().getToCom().equals("cay")) {
+                // WriterManager.writeResults(reelSetsCollectionData.getResultFilePath(), sbEvo);
                 TypeReference<List<ReelSetEvo>> typeRef = new TypeReference<>() {
                 };
+
                 List<ReelSetEvo> reelSetsEvo = null;
+                String convertSrc = reelSetsCollectionData.getConvert().getSrc();
+
                 try {
-                    reelSetsEvo = om.readValue(sb.toString(), typeRef);
+                    reelSetsEvo = om.readValue(new File(convertSrc), typeRef);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
-                StringBuilder sb2 = null;
-                // System.out.println(reelSetsEvo);
-
-                sb2 = convertToCay(reelSetsCollectionData, reelSetsEvo);
+                StringBuilder sbCay = CayConverter.convertToCay(reelSetsCollectionData, reelSetsEvo);
 
                 if (reelSetsCollectionData.getOutput().equals("stdout")) {
-                    System.out.println(sb2);
+                    System.out.println(sbCay);
+                } else if (reelSetsCollectionData.getOutput().equals("file")) {
+                    WriterManager.writeResults(reelSetsCollectionData.getConvert().getDest(), sbCay);
                 } else {
-                    WriterManager.writeResults(targetFilePath, sb2);
+                    throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
                 }
+            } else {
+                throw new NotSupportedOutputMediaType("Invalid conversion type. Please review reelDefinitions.json");
             }
-        } else {
-            TypeReference<List<ReelSetEvo>> typeRef = new TypeReference<>() {
-            };
-            List<ReelSetEvo> reelSetsEvo = null;
-            String convertSrc = reelSetsCollectionData.getConvertSrc();
-            try {
-                reelSetsEvo = om.readValue(new File(convertSrc), typeRef);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            StringBuilder sb2 = null;
-            // System.out.println(reelSetsEvo);
-
-            sb2 = convertToCay(reelSetsCollectionData, reelSetsEvo);
-
-            WriterManager.writeResults(reelSetsCollectionData.getConvertDest(), sb2);
-
         }
     }
 
-
-    private static StringBuilder convertToCay(ReelSetsCollectionData reelSetsCollection, List<ReelSetEvo> reelSetsEvo) {
-        StringBuilder sb2 = new StringBuilder(System.lineSeparator());
-
-        final String mapName = reelSetsCollection.getMapName();
-        final String gameId = reelSetsCollection.getGameId();
-
-        final int SETS_COUNT = reelSetsEvo.size();
-
-        for (int i = 0; i < SETS_COUNT; i++) {
-
-            final int SET_SIZE = reelSetsEvo.get(i).getReelSet().size();
-            for (int j = 0; j < SET_SIZE; j++) {
-
-                final int REEL_SIZE = reelSetsEvo.get(i).getReelSet().get(j).size();
-                for (int k = 0; k < REEL_SIZE; k++) {
-
-                    Integer currentTile = reelSetsEvo.get(i).getReelSet().get(j).get(k);
-
-                    sb2.append("\"").append(mapName).append("\",")
-                            .append("\"").append(j).append("\",")
-                            .append("\"").append(k).append("\",")
-                            .append("\"").append(gameId)
-                            .append(currentTile < 10 ? "0" + currentTile : currentTile)
-                            .append("\"")
-                            .append(System.lineSeparator());
-                }
-            }
-        }
-
-        return sb2;
-    }
 }

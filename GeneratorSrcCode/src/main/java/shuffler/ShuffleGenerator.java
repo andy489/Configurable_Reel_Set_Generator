@@ -80,7 +80,7 @@ public class ShuffleGenerator {
                 }
             }
 
-            sb.delete(sb.length() - 2, sb.length())
+            sb.delete(sb.length() - 1 -System.lineSeparator().length(), sb.length())
                     .append(System.lineSeparator())
                     .append("\t\t]")
                     .append(System.lineSeparator())
@@ -88,7 +88,7 @@ public class ShuffleGenerator {
                     .append(System.lineSeparator());
         }
 
-        sb.delete(sb.length() - 2, sb.length())
+        sb.delete(sb.length() - 1 - System.lineSeparator().length(), sb.length())
                 .append(System.lineSeparator())
                 .append("]");
     }

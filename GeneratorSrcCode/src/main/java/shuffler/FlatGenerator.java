@@ -18,7 +18,7 @@ public class FlatGenerator {
                     .repeat(Math.max(0, SIZE_2)));
         }
 
-        sb.delete(sb.length() - 1, sb.length())
+        sb.delete(sb.length() -1, sb.length())
                 .append("],")
                 .append(System.lineSeparator());
     }
@@ -36,7 +36,7 @@ public class FlatGenerator {
             genReel(r, sb);
         }
 
-        sb.delete(sb.length() - 2, sb.length())
+        sb.delete(sb.length() - 1 - System.lineSeparator().length(), sb.length())
                 .append(System.lineSeparator())
                 .append("\t\t")
                 .append("]")
@@ -70,7 +70,7 @@ public class FlatGenerator {
             k++;
         }
 
-        sb.delete(sb.length() - 2, sb.length())
+        sb.delete(sb.length() - 1 - System.lineSeparator().length(), sb.length())
                 .append(System.lineSeparator())
                 .append("]");
     }

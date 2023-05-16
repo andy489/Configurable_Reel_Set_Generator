@@ -5,23 +5,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reel.ReelSet;
 import reel.ReelSetsCollectionData;
 import reel.Restriction;
+import wrapper.ConvertWrapper;
 
 import java.util.List;
 
 public class TemplateJsonReelDefinitions {
     public static void getTemplate(ObjectMapper om) {
-        final String companyName = "cay"; // "evo" | "cay"
-        final String mapName = "GAME_CODE";
+        final String companyName = "company abb"; // "evo" | "cay"
+        final String mapName = "game abb";
         final String gameId = "123";
 
-        final String strategyType = "shuffle"; // "flat" | "shuffle"
+        final String strategy = "shuffle"; // "flat" | "shuffle"
         final String output = "file"; // "file" | "stdout"
-        final String sourceFilePath = "./reelDefinitions.json";
         final String resultFilePath = "./result.txt";
 
-        final Boolean convert = false;
-        final String convertSrc = "./result.txt";
-        final String convertDest = "./result.txt";
+        final ConvertWrapper convert = new ConvertWrapper()
+                .setConfirm(false)
+                .setToCom("company abb")
+                .setSrc("./result.txt")
+                .setDest("./result.txt");
 
         final List<List<Integer>> reelSet1 = List.of(
                 List.of(0, 12, 12, 0, 10, 10, 0, 6, 6),
@@ -56,17 +58,13 @@ public class TemplateJsonReelDefinitions {
         final List<ReelSet> reelSets = List.of(restrictedReelSet1, restrictedReelSet2);
 
         ReelSetsCollectionData reelSetCol = new ReelSetsCollectionData()
-                .setCom(companyName)
                 .setMapName(mapName)
                 .setGameId(gameId)
+                .setStrategy(strategy)
                 .setOutput(output)
                 .setResultFilePath(resultFilePath)
-                .setStrategy(strategyType)
                 .setReelSets(reelSets)
-                .setConvert(convert)
-                .setConvertSrc(convertSrc)
-                .setConvertDest(convertDest);
-
+                .setConvert(convert);
         try {
             System.out.println(om.writerWithDefaultPrettyPrinter().writeValueAsString(reelSetCol));
             System.out.println();

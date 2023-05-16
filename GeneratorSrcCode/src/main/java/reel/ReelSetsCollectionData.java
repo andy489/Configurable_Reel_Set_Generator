@@ -1,15 +1,12 @@
 package reel;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import wrapper.ConvertWrapper;
 
 import java.util.List;
 
 public class ReelSetsCollectionData {
-
-    @JsonAlias({"company", "org"})
-    private String com;
-
-    @JsonAlias({"gameName"})
+    @JsonAlias({"gameName", "gameAbb", "abb", "abbreviation"})
     private String mapName;
 
     @JsonAlias({"id"})
@@ -22,27 +19,12 @@ public class ReelSetsCollectionData {
     private String output;
 
     @JsonAlias({"tar", "target"})
-
     private String resultFilePath;
+    @JsonAlias({"convertWrapper"})
+    private ConvertWrapper convert;
 
     @JsonAlias({"reels", "sets"})
     private List<ReelSet> reelSets;
-
-    private Boolean convert;
-
-    private String convertSrc;
-
-    private String convertDest;
-
-
-    public String getCom() {
-        return com;
-    }
-
-    public ReelSetsCollectionData setCom(String com) {
-        this.com = com;
-        return this;
-    }
 
     public String getMapName() {
         return mapName;
@@ -79,12 +61,22 @@ public class ReelSetsCollectionData {
         this.output = output;
         return this;
     }
+
     public String getResultFilePath() {
         return resultFilePath;
     }
 
     public ReelSetsCollectionData setResultFilePath(String resultFilePath) {
         this.resultFilePath = resultFilePath;
+        return this;
+    }
+
+    public ConvertWrapper getConvert() {
+        return convert;
+    }
+
+    public ReelSetsCollectionData setConvert(ConvertWrapper convert) {
+        this.convert = convert;
         return this;
     }
 
@@ -97,46 +89,16 @@ public class ReelSetsCollectionData {
         return this;
     }
 
-    public Boolean getConvert() {
-        return convert;
-    }
-
-    public ReelSetsCollectionData setConvert(Boolean convert) {
-        this.convert = convert;
-        return this;
-    }
-
-    public String getConvertSrc() {
-        return convertSrc;
-    }
-
-    public ReelSetsCollectionData setConvertSrc(String convertSrc) {
-        this.convertSrc = convertSrc;
-        return this;
-    }
-
-    public String getConvertDest() {
-        return convertDest;
-    }
-
-    public ReelSetsCollectionData setConvertDest(String convertDest) {
-        this.convertDest = convertDest;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "ReelSetsCollectionData{" +
-                "com='" + com + '\'' +
-                ", mapName='" + mapName + '\'' +
+                "mapName='" + mapName + '\'' +
                 ", gameId='" + gameId + '\'' +
                 ", strategy='" + strategy + '\'' +
                 ", output='" + output + '\'' +
                 ", resultFilePath='" + resultFilePath + '\'' +
+                ", convert=" + convert +
                 ", reelSets=" + reelSets +
-                ", convert='" + convert + '\'' +
-                ", convertSrc='" + convertSrc + '\'' +
-                ", convertDest='" + convertDest + '\'' +
                 '}';
     }
 }

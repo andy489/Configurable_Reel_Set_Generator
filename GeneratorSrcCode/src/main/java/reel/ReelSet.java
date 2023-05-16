@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class ReelSet {
-    @JsonAlias({"counts", "cnt", "cnts", "tiles"})
+    @JsonAlias({"counts", "cnt", "cnts", "tiles", "reelSetTileCounts"})
     protected List<List<Integer>> tilesCounts;
     
     @JsonAlias({"res"})
