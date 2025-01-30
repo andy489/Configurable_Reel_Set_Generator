@@ -6,6 +6,7 @@ import rng.RNG;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -14,8 +15,9 @@ public class RestrictionsApplier {
     private static final RNG rng = new RNG();
 
     public static LinkedList<Integer> get(final Map<Integer, Integer> tilesCnt, final Restriction restrictions) {
-        Integer minStack = restrictions.getMinStack();
-        Integer maxStack = restrictions.getMaxStack();
+        List<Integer> stackSizes = restrictions.getStacks();
+        List<Double> stackChances = restrictions.getChances();
+
         Integer distance = restrictions.getDistance();
 
         LinkedList<Integer> res = new LinkedList<>();
@@ -40,7 +42,7 @@ public class RestrictionsApplier {
                 continue;
             }
 
-            final int CURR_STACK_SZ = rng.getRandInRange(minStack, maxStack + 1);
+            final int CURR_STACK_SZ = rng.getWeightedRand(stackSizes, stackChances);
             final int REPETITIONS = Math.min(CURR_STACK_SZ, CURR_CNT_TILE);
 
             if (forbiddenByDist.getOrDefault(TILE_TO_PLACE, Integer.MAX_VALUE) < distance) {

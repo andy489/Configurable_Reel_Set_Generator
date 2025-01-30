@@ -3,22 +3,23 @@ package reel;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 public class Restriction {
-    @JsonAlias({"min"})
+    @JsonAlias({"stack", "stackSizes", "stackSizes"})
+    protected List<Integer> stacks;
 
-    protected Integer minStack;
-    @JsonAlias({"max"})
+    @JsonAlias({"chance", "stackChances", "stacksChances"})
+    protected List<Double> chances;
 
-    protected Integer maxStack;
-    @JsonAlias({"dist"})
-
+    @JsonAlias({"dist", "minDistance", "minStackDistance"})
     protected Integer distance;
 
     @Override
     public String toString() {
         return "Restriction{" +
-                "minStack=" + minStack +
-                ", maxStack=" + maxStack +
+                "stacks=" + stacks +
+                ", chances=" + chances +
                 ", distance=" + distance +
                 '}';
     }
@@ -26,33 +27,36 @@ public class Restriction {
     public Restriction() {
     }
 
-    public Restriction(Integer minStack, Integer maxStack, Integer distance) {
-        this.minStack = minStack;
-        this.maxStack = maxStack;
+    public Restriction(List<Integer> stacks, List<Double> chances, Integer distance) {
+        this.stacks = stacks;
+        this.chances = chances;
         this.distance = distance;
     }
 
-    public void setMinStack(Integer minStack) {
-        this.minStack = minStack;
+    public List<Integer> getStacks() {
+        return stacks;
     }
 
-    public void setMaxStack(Integer maxStack) {
-        this.maxStack = maxStack;
+    public Restriction setStacks(List<Integer> stacks) {
+        this.stacks = stacks;
+        return this;
     }
 
-    public void setDistance(Integer distance) {
-        this.distance = distance;
+    public List<Double> getChances() {
+        return chances;
     }
 
-    public Integer getMinStack() {
-        return minStack;
-    }
-
-    public Integer getMaxStack() {
-        return maxStack;
+    public Restriction setChances(List<Double> chances) {
+        this.chances = chances;
+        return this;
     }
 
     public Integer getDistance() {
         return distance;
+    }
+
+    public Restriction setDistance(Integer distance) {
+        this.distance = distance;
+        return this;
     }
 }

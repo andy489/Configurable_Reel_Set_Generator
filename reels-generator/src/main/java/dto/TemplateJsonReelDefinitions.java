@@ -8,6 +8,7 @@ import reel.Restriction;
 import wrapper.ConvertWrapper;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TemplateJsonReelDefinitions {
@@ -38,8 +39,10 @@ public class TemplateJsonReelDefinitions {
                 Arrays.asList(12, 12, 0, 10, 10, 0, 6, 6, 0)
         );
 
-        final Restriction r11 = new Restriction(3, 3, 3);
-        final Restriction r12 = new Restriction(1, 1, 2);
+        final Restriction r11 =
+                new Restriction(Collections.singletonList(3), Collections.singletonList(100.0), 3);
+        final Restriction r12 =
+                new Restriction(Collections.singletonList(2), Collections.singletonList(100.0), 2);
 
         final List<List<Integer>> reelSet2 = Arrays.asList(
                 Arrays.asList(0, 12, 12, 0, 10, 10, 0, 6, 6),
@@ -50,8 +53,10 @@ public class TemplateJsonReelDefinitions {
                 Arrays.asList(12, 12, 0, 10, 10, 0, 6, 6, 0)
         );
 
-        final Restriction r21 = new Restriction(4, 4, 4);
-        final Restriction r22 = new Restriction(2, 2, 4);
+        final Restriction r21 =
+                new Restriction(Collections.singletonList(4), Collections.singletonList(100.0), 4);
+        final Restriction r22 =
+                new Restriction(Collections.singletonList(2), Collections.singletonList(100.0), 4);
 
         final ReelSet restrictedReelSet1 = new ReelSet(reelSet1, Arrays.asList(r11, r12));
         final ReelSet restrictedReelSet2 = new ReelSet(reelSet2, Arrays.asList(r21, r22));

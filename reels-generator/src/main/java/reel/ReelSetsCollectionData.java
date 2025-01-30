@@ -20,6 +20,7 @@ public class ReelSetsCollectionData {
 
     @JsonAlias({"tar", "target"})
     private String resultFilePath;
+
     @JsonAlias({"convertWrapper"})
     private ConvertWrapper convert;
 

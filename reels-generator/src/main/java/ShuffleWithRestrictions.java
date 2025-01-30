@@ -97,14 +97,16 @@ public class ShuffleWithRestrictions {
             } else if (reelSetsCollectionData.getOutput().equals("file")) {
                 WriterManager.writeResults(reelSetsCollectionData.getResultFilePath(), sbEvo);
             } else {
-                throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
+                throw new NotSupportedOutputMediaType("Invalid media type output. " +
+                        "Please review reelDefinitions.json");
             }
         } else {
             if (reelSetsCollectionData.getConvert().getToCom().equals("count") ||
                     reelSetsCollectionData.getConvert().getToCom().equals("evo")) {
                 List<ReelSetEvo> reelSetEvoList = new ArrayList<>();
 
-                try (BufferedReader br = new BufferedReader(new FileReader(reelSetsCollectionData.getConvert().getSrc()))) {
+                try (BufferedReader br = new BufferedReader(new FileReader(reelSetsCollectionData.getConvert()
+                        .getSrc()))) {
                     String line = br.readLine();
 
                     ReelSetEvo currReelSet = null;
@@ -114,7 +116,8 @@ public class ShuffleWithRestrictions {
                         String[] tokens = line.split(",");
                         if (tokens.length != 4) {
                             break;
-//                            throw new NoSuchCompanyFormatException("Unrecognizable company format. Please review reelDefinitions.json");
+                            // throw new NoSuchCompanyFormatException("Unrecognizable company format.
+                            // Please review reelDefinitions.json");
                         }
 
                         if (currSetName == null || !currSetName.equals(tokens[0])) {
@@ -129,7 +132,8 @@ public class ShuffleWithRestrictions {
                             }
                         }
 
-                        currReelSet.getReelSet().get(Integer.parseInt(tokens[1].replaceAll("\"", ""))).add(Integer.parseInt(tokens[3].replaceAll("\"", "")) % 100);
+                        currReelSet.getReelSet().get(Integer.parseInt(tokens[1].replaceAll("\"", "")))
+                                .add(Integer.parseInt(tokens[3].replaceAll("\"", "")) % 100);
                         line = br.readLine();
 
                     }
@@ -138,7 +142,8 @@ public class ShuffleWithRestrictions {
                 }
                 // remove empty reels
                 for (ReelSetEvo reelSetEvo : reelSetEvoList) {
-                    reelSetEvo.setReelSet(reelSetEvo.getReelSet().stream().filter(r -> !r.isEmpty()).collect(Collectors.toList()));
+                    reelSetEvo.setReelSet(reelSetEvo.getReelSet().stream()
+                            .filter(r -> !r.isEmpty()).collect(Collectors.toList()));
                 }
 
                 StringBuilder sb;
@@ -153,7 +158,8 @@ public class ShuffleWithRestrictions {
                 } else if (reelSetsCollectionData.getOutput().equals("file")) {
                     WriterManager.writeResults(reelSetsCollectionData.getConvert().getDest(), sb);
                 } else {
-                    throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
+                    throw new NotSupportedOutputMediaType("Invalid media type output. " +
+                            "Please review reelDefinitions.json");
                 }
             } else if (reelSetsCollectionData.getConvert().getToCom().equals("cay")) {
                 // WriterManager.writeResults(reelSetsCollectionData.getResultFilePath(), sbEvo);
@@ -176,12 +182,13 @@ public class ShuffleWithRestrictions {
                 } else if (reelSetsCollectionData.getOutput().equals("file")) {
                     WriterManager.writeResults(reelSetsCollectionData.getConvert().getDest(), sbCay);
                 } else {
-                    throw new NotSupportedOutputMediaType("Invalid media type output. Please review reelDefinitions.json");
+                    throw new NotSupportedOutputMediaType("Invalid media type output. " +
+                            "Please review reelDefinitions.json");
                 }
             } else {
-                throw new NotSupportedOutputMediaType("Invalid conversion type. Please review reelDefinitions.json");
+                throw new NotSupportedOutputMediaType("Invalid conversion type. " +
+                        "Please review reelDefinitions.json");
             }
         }
     }
-
 }
